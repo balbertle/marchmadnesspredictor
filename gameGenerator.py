@@ -76,71 +76,8 @@ def simulate_tournament(teams, num_simulations=100):
         champion = round_teams[0]
         championships[champion] += 1
 
-    return wins, championships  # <-- Added this line
+    return wins, championships
 
-
-oneSeed = "auburn"
-twoSeed = "alabama"
-threeSeed = "florida"
-fourSeed = "duke"
-fiveSeed = "tennessee"
-sixSeed = "houston"
-sevenSeed = "purdue"
-eightSeed = "texas-am"
-nineSeed = "st-johns-ny"
-tenSeed = "iowa-state"
-elevenSeed = "michigan-state"
-twelveSeed = "texas-tech"
-thirteenSeed = "arizona"
-fourteenSeed = "memphis"
-fifteenSeed = "kentucky"
-sixteenSeed = "wisconsin"
-"""# Round of 16
-oneAfter16 = predict_probable_winner(oneSeed, sixteenSeed)
-twoAfter16 = predict_probable_winner(twoSeed, fifteenSeed)
-threeAfter16 = predict_probable_winner(threeSeed, fourteenSeed)
-fourAfter16 = predict_probable_winner(fourSeed, thirteenSeed)
-fiveAfter16 = predict_probable_winner(fiveSeed, twelveSeed)
-sixAfter16 = predict_probable_winner(sixSeed, elevenSeed)
-sevenAfter16 =predict_probable_winner(sevenSeed, tenSeed)
-eightAfter16 = predict_probable_winner(eightSeed, nineSeed)
-
-#Round of 8
-oneAfter8 = predict_probable_winner(oneAfter16, eightAfter16)
-twoAfter8 = predict_probable_winner(twoAfter16, sevenAfter16)
-threeAfter8 = predict_probable_winner(threeAfter16, sixAfter16)
-fourAfter8 = predict_probable_winner(fourAfter16, fiveAfter16)
-
-#Final Four
-oneAfter4 = predict_probable_winner(oneAfter8, fourAfter8)
-twoAfter4 = predict_probable_winner(twoAfter8, threeAfter8)
-
-#Championship
-champion = predict_probable_winner(oneAfter4, twoAfter4)
-print("The predicted champion is:", champion)"""
-"""
-oneAfter16 = predict_random_winner(oneSeed, sixteenSeed)
-twoAfter16 = predict_random_winner(twoSeed, fifteenSeed)
-threeAfter16 = predict_random_winner(threeSeed, fourteenSeed)
-fourAfter16 = predict_random_winner(fourSeed, thirteenSeed)
-fiveAfter16 = predict_random_winner(fiveSeed, twelveSeed)
-sixAfter16 = predict_random_winner(sixSeed, elevenSeed)
-sevenAfter16 =predict_random_winner(sevenSeed, tenSeed)
-eightAfter16 = predict_random_winner(eightSeed, nineSeed)
-
-#Round of 8
-oneAfter8 = predict_random_winner(oneAfter16, eightAfter16)
-twoAfter8 = predict_random_winner(twoAfter16, sevenAfter16)
-threeAfter8 = predict_random_winner(threeAfter16, sixAfter16)
-fourAfter8 = predict_random_winner(fourAfter16, fiveAfter16)
-
-#Final Four
-oneAfter4 = predict_random_winner(oneAfter8, fourAfter8)
-twoAfter4 = predict_random_winner(twoAfter8, threeAfter8)
-
-#Championship
-champion = predict_random_winner(oneAfter4, twoAfter4)
-print("The predicted champion is:", champion)"""
 def save_results_to_csv(wins, championships):
     today = datetime.date.today().strftime("%Y-%m-%d")
     filename = f"tournament_results_{today}.csv"
@@ -153,6 +90,9 @@ def save_results_to_csv(wins, championships):
             writer.writerow([team, wins[team], championships[team]])
 
     print(f"Results saved to {filename}")
-teams = ["auburn", "alabama", "florida", "duke", "tennessee", "houston", "purdue", "texas-am", "st-johns-ny", "iowa-state", "michigan-state", "texas-tech", "arizona", "memphis", "kentucky", "wisconsin"]
-wins, championships = simulate_tournament(teams, 10000)
-save_results_to_csv(wins, championships)
+teams = ["auburn", "alabama", "florida", "duke", 
+        "tennessee", "houston", "purdue", "texas-am", 
+        "st-johns-ny", "iowa-state", "texas-tech", "arizona", "memphis", "kentucky", 
+        "wisconsin", "michigan", "michigan-state", "missouri", 
+        "marquette", "clemson", "maryland", "mississippi-state", 
+        "kansas", "mississippi", "louisville"]
