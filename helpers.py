@@ -1,7 +1,7 @@
 import csv
 
 def data(team):
-    with open("team_data.csv", newline='') as csvfile:
+    with open("stats.csv", newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             if row["Team Name"].lower() == team.lower():
@@ -25,7 +25,8 @@ def data(team):
                     int(row["Blocks"]),
                     int(row["Turnovers"]),
                     int(row["Personal Fouls"]),
-                    int(row["Total Points"])
+                    int(row["Total Points"]),
+                    float(row["Possessions Per Game"])
                 )
     return None
 
