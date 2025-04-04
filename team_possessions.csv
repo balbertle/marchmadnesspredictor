@@ -3,7 +3,7 @@ Alabama,78.5172
 Cal Poly,77.475
 South Dakota,76.9733
 Winthrop,76.7706
-UCF,75.7081
+UCF,75.7832
 Bryant,75.3739
 N Florida,75.125
 New Mexico,75.0658
@@ -74,6 +74,7 @@ LSU,72.3512
 Florida St,72.3426
 New Orleans,72.2706
 Santa Clara,72.2662
+UC Irvine,72.2375
 Youngstown St,72.2277
 Florida,72.197
 Maryland,72.1639
@@ -85,7 +86,6 @@ Belmont,71.9391
 Bowling Green,71.9342
 Mississippi St,71.9228
 Gardner-Webb,71.9052
-UC Irvine,71.9044
 Charleston So,71.8854
 Iowa St,71.875
 S Utah,71.8518
@@ -137,11 +137,11 @@ UMass Lowell,71.094
 Oregon,71.0929
 BYU,71.0629
 San Francisco,71.0184
-USC,71.0074
 Pepperdine,70.9699
 W Michigan,70.9286
 Tenn Tech,70.8879
 NC A&T,70.8512
+USC,70.8436
 Albany,70.8335
 Coppin St,70.8035
 Texas,70.8029
@@ -176,6 +176,7 @@ Jacksonville,70.4097
 Valparaiso,70.3891
 Marquette,70.3849
 CS Fullerton,70.3812
+Chattanooga,70.3545
 Wright St,70.354
 Colorado,70.3275
 Washington,70.3213
@@ -195,7 +196,6 @@ Little Rock,70.0665
 Tulane,70.0406
 Georgetown,70.0283
 UL Monroe,69.9854
-Chattanooga,69.9486
 Saint Louis,69.9246
 Pacific,69.9226
 Mt St Mary's,69.9186
@@ -278,6 +278,7 @@ Lamar,68.2583
 Bradley,68.2559
 Fairfield,68.2218
 Montana St,68.2145
+Cincinnati,68.205
 Cleveland St,68.1886
 George Mason,68.1196
 Charlotte,68.1145
@@ -289,7 +290,6 @@ Clemson,67.9548
 Missouri St,67.9475
 LIU,67.9351
 Lafayette,67.9285
-Cincinnati,67.907
 Grambling,67.8738
 Hampton,67.8583
 Presbyterian,67.8133
@@ -358,7 +358,7 @@ Saint Mary's,65.6838
 American,65.6466
 Houston,65.3829
 Vermont,65.3532
-Villanova,65.2728
+Villanova,65.2729
 Virginia,62.9395
 Wagner,62.7558
 N Texas,62.7316

@@ -20,9 +20,6 @@ def pythagoreanExpectation(team, filename="stats.csv"):
     percentage = ptsFor**11.5 / (ptsFor**11.5 + ptsAgainst**11.5)
     return percentage
 
-# For expected points
-from offensiveFunctions.expectedPoints import simulate_matchup
-
 # For offensive efficiency
 from offensiveFunctions.generateOffensiveEfficiency import calculate_offensive_efficiency
 from offensiveFunctions.generateDefensiveEfficiency import calculate_defensive_efficiency

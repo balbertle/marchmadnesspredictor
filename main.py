@@ -7,10 +7,7 @@ import argparse
 
 def predict_winner(team1_name, team2_name, num_simulations=1000):
     """
-    Predict the winner of a game between two teams using a weighted approach:
-    - 60% weight on the simulation results
-    - 35% weight on the Pythagorean expectation
-    - 5% weight on offensive efficiency comparison
+    Predict the winner of a game between two teams using a weighted approach
     
     Args:
         team1_name: Name of the first team
@@ -129,14 +126,13 @@ def predict_winner(team1_name, team2_name, num_simulations=1000):
         pyth_winner = team2_name
         pyth_prob = team2_pyth
     
-    # Combine predictions with weights (60% simulation, 20% Pythagorean, 10% offensive efficiency, 10% defensive efficiency, 5% BPM)
+    # Combine predictions with weights (60% simulation, 15% Pythagorean, 10% offensive efficiency, 10% defensive efficiency, 5% BPM)
     sim_weight = 0.60
-    pyth_weight = 0.20
+    pyth_weight = 0.15
     eff_weight = 0.10
     deff_weight = 0.10
     bpm_weight = 0.05
 
-    # Calculate final probability based on which team is predicted to win
     if sim_winner == team1_name:
         team1_prob = sim_weight * sim_prob + pyth_weight * team1_pyth + eff_weight * team1_eff_prob + deff_weight * team1_deff_prob + bpm_weight * team1_bpm_prob
     else:

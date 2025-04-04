@@ -27,6 +27,28 @@ def scrape_team_data(team_name):
     # Parse the HTML content using BeautifulSoup
     soup = BeautifulSoup(response.content, "html.parser")
     
+    # Add new code to get advanced stats using XPath
+    team_bpm = 0.0
+    try:
+        # Use full XPath to find the BPM cell directly
+        bpm_cell = soup.select_one('html > body > div:nth-child(4) > div:nth-child(5) > div:nth-child(12) > div:nth-child(5) > div:nth-child(1) > table > tfoot > tr > td:nth-child(25)')
+        if bpm_cell:
+            # Try multiple ways to get the BPM value
+            if bpm_cell.string and bpm_cell.string.strip():
+                team_bpm = float(bpm_cell.string.strip())
+                print(f"Found team BPM from string: {team_bpm}")
+            elif bpm_cell.get('csk'):
+                team_bpm = float(bpm_cell.get('csk'))
+                print(f"Found team BPM from csk: {team_bpm}")
+            elif bpm_cell.get_text(strip=True):
+                team_bpm = float(bpm_cell.get_text(strip=True))
+                print(f"Found team BPM from text: {team_bpm}")
+        else:
+            print("BPM cell not found using XPath")
+    except (AttributeError, ValueError) as e:
+        print(f"Error extracting BPM using XPath: {e}")
+        team_bpm = 0.0
+
     # Scraping data for team
     games_element = soup.find("td", {"data-stat": "games"})
     mp_element = soup.find("td", {"data-stat": "mp"})
@@ -165,7 +187,7 @@ def scrape_team_data(team_name):
         "Effective Field Goal %": efg,
         "Expected Possessions": tov + fg2a + fg3a + ft // 2.15,
         "Possessions": 0,
-        "Box Plus/Minus": bpm,
+        "Box Plus/Minus": team_bpm,
         "Opponent Field Goals Made": opp_fg,
         "Opponent Field Goals Attempted": opp_fga,
         "Opponent Field Goal Percentage": opp_fg_pct,
@@ -188,7 +210,7 @@ def scrape_team_data(team_name):
         "Opponent Personal Fouls": opp_pf,
         "Opponent Total Points": opp_pts,
         "Opponent Effective Field Goal %": opp_efg,
-        "Box Plus/Minus": bpm
+        "Box Plus/Minus": team_bpm
     }
 
 def write_to_csv(data, filename="stats.csv"):

@@ -47,7 +47,6 @@ def data(team_name):
             print("No data found in CSV file")
             return None
         
-        # Find the team's data (case-insensitive)
         for row in data_list:
             if row['Team Name'].lower() == team_name.lower():
                 # Get expected possessions if available, otherwise calculate it
@@ -56,10 +55,7 @@ def data(team_name):
                 else:
                     expected_possessions = calculate_expected_possessions(row)
                 
-                # Get BPM if available, otherwise use default value of 0.0
-                bpm = 0.0
-                if 'Box Plus/Minus' in row and row['Box Plus/Minus']:
-                    bpm = float(row['Box Plus/Minus'])
+                bpm = float(row['Box Plus/Minus'])
                 
                 # Convert string values to appropriate types
                 return TeamStats(
@@ -89,7 +85,7 @@ def data(team_name):
                     pts=int(row['Total Points']),
                     efg=float(row['Effective Field Goal %']),
                     expected_possessions=expected_possessions,
-                    possessions=expected_possessions,  # Use expected_possessions for possessions
+                    possessions=float(row['Possessions']), 
                     bpm=bpm,
                     opp_fg=int(row['Opponent Field Goals Made']),
                     opp_fga=int(row['Opponent Field Goals Attempted']),

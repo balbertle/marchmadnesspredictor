@@ -178,7 +178,7 @@ def simulate_matchup(team1_name, team2_name, num_simulations=1000):
         print("Could not get stats for one or both teams")
         return None
     
-    possessions = ((team1_stats.possessions + team2_stats.possessions) // 2)  # Average possessions played per game between two teams
+    possessions = ((float(team1_stats.possessions) + float(team2_stats.possessions)) // 2)  # Average possessions played per game between two teams
     print(f"Team 1 possessions: {team1_stats.possessions}")
     print(f"Team 2 possessions: {team2_stats.possessions}")
     print(f"Possessions: {possessions}")
