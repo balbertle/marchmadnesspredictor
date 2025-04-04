@@ -4,6 +4,7 @@ from datagenerator import pythagoreanExpectation
 import csv
 import datetime
 
+#OUTDATED
 def predict_random_winner(team1, team2):
     # Get the win percentages for both teams
     team1_percentage = pythagoreanExpectation(team1)

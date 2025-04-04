@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+import sys
+sys.path.append(r'C:\Users\alber\Documents\marchmadness')
+from helpers import getTeams, data
 
 def scrape_possessions_data():
     url = 'https://www.teamrankings.com/ncaa-basketball/stat/possessions-per-game'
@@ -37,10 +40,11 @@ def scrape_possessions_data():
 
     with open(csv_filename, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["Team Name", "Third Data Sort"])  # Header
+        writer.writerow(["Team Name", "Possessions Per Game"])  # Header
         writer.writerows(data)
 
     print(f"Data successfully saved to {csv_filename}")
+    return data
 
 def merge_csvs(full_stats_file, possessions_file, output_file):
     def normalize_team_name(name):
@@ -89,5 +93,152 @@ def merge_csvs(full_stats_file, possessions_file, output_file):
 
     print(f"Merged data saved to {output_file}")
 
+def update_team_stats_with_possessions(csv_file_path="stats.csv"):
+    """Update the CSV file with possessions data from the scraping"""
+    # First scrape the possessions data
+    possessions_data = scrape_possessions_data()
+    
+    # Create a dictionary of team names to possessions
+    possessions_dict = {}
+    for team_name, possessions in possessions_data:
+        normalized_name = team_name.lower().replace(" ", "-")
+        possessions_dict[normalized_name] = float(possessions)
+    
+    # Read the existing CSV file
+    rows = []
+    with open(csv_file_path, mode="r", newline="") as file:
+        reader = csv.reader(file)
+        header = next(reader)  # Read header
+        
+        # Check if "Possessions" column already exists
+        if "Possessions" not in header:
+            header.append("Possessions")
+            possession_index = len(header) - 1
+        else:
+            possession_index = header.index("Possessions")
+        
+        # Read all rows
+        for row in reader:
+            team_name = row[0].lower().replace(" ", "-")
+            if team_name in possessions_dict:
+                # Ensure row has enough columns
+                while len(row) <= possession_index:
+                    row.append("")
+                # Update possessions value
+                row[possession_index] = str(possessions_dict[team_name])
+                print(f"Updated {team_name} with {possessions_dict[team_name]} possessions per game")
+            rows.append(row)
+    
+    # Write back to the CSV file
+    with open(csv_file_path, mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerows(rows)
+    
+    print(f"Successfully updated {csv_file_path} with possessions data")
+
+def calculate_expected_possessions(team_stats):
+    """
+    Calculate expected possessions manually based on team statistics.
+    This is an alternative to scraping possessions data.
+    
+    Formula: Possessions = FGA + 0.44 * FTA - ORB + TOV
+    
+    Args:
+        team_stats: TeamStats object containing team statistics
+        
+    Returns:
+        float: Estimated possessions per game
+    """
+    # Calculate total field goal attempts
+    fga = team_stats.fg2a + team_stats.fg3a
+    
+    # Calculate estimated possessions
+    # Formula: Possessions = FGA + 0.44 * FTA - ORB + TOV
+    estimated_possessions = fga + 0.44 * team_stats.fta - team_stats.orb + team_stats.tov
+    
+    # Divide by number of games to get per game average
+    
+    return estimated_possessions
+
+def update_team_stats_with_calculated_possessions(csv_file_path="stats.csv"):
+    """Update the CSV file with manually calculated possessions data in a new column"""
+    # Read the existing CSV file
+    rows = []
+    with open(csv_file_path, mode="r", newline="") as file:
+        reader = csv.reader(file)
+        header = next(reader)  # Read header
+        
+        # Add "Expected Possessions" column if it doesn't exist
+        if "Expected Possessions" not in header:
+            header.append("Expected Possessions")
+            expected_possession_index = len(header) - 1
+        else:
+            expected_possession_index = header.index("Expected Possessions")
+        
+        # Get column indices for required stats
+        team_name_index = 0
+        fg2a_index = header.index("2P Attempted") if "2P Attempted" in header else None
+        fg3a_index = header.index("3P Attempted") if "3P Attempted" in header else None
+        fta_index = header.index("Free Throws Attempted") if "Free Throws Attempted" in header else None
+        orb_index = header.index("Offensive Rebounds") if "Offensive Rebounds" in header else None
+        tov_index = header.index("Turnovers") if "Turnovers" in header else None
+        games_index = header.index("Games") if "Games" in header else None
+        
+        # Check if all required columns exist
+        if None in [fg2a_index, fg3a_index, fta_index, orb_index, tov_index, games_index]:
+            print("Error: Missing required columns in CSV file")
+            return
+        
+        # Read all rows
+        for row in reader:
+            # Skip any rows that match the header (duplicate headers in the file)
+            if row[0] == "Team Name":
+                continue
+                
+            team_name = row[team_name_index]
+            
+            try:
+                # Extract required stats
+                fg2a = int(row[fg2a_index])
+                fg3a = int(row[fg3a_index])
+                fta = int(row[fta_index])
+                orb = int(row[orb_index])
+                tov = int(row[tov_index])
+                games = int(row[games_index])
+                
+                # Calculate possessions
+                fga = fg2a + fg3a
+                estimated_possessions = fga + 0.44 * fta - orb + tov
+                possessions_per_game = estimated_possessions / max(1, games)
+                
+                # Ensure row has enough columns
+                while len(row) <= expected_possession_index:
+                    row.append("")
+                
+                # Update expected possessions value
+                row[expected_possession_index] = str(round(possessions_per_game, 2))
+                print(f"Updated {team_name} with {possessions_per_game:.2f} expected possessions per game")
+            except ValueError as e:
+                print(f"Warning: Could not process row for {team_name}: {e}")
+                continue
+                
+            rows.append(row)
+    
+    # Write back to the CSV file
+    with open(csv_file_path, mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerows(rows)
+    
+    print(f"Successfully updated {csv_file_path} with calculated expected possessions data")
+
+def main():
+    # Example usage
+    # update_team_stats_with_possessions()  # Use scraper
+    update_team_stats_with_calculated_possessions()  # Use manual calculation
+
+# Update the default stats.csv file with expected possessions
+update_team_stats_with_calculated_possessions()
 
 
